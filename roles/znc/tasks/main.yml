@@ -1,0 +1,13 @@
+# vi: set numberwidth=2 :
+# vi: set tabstop=2 :
+# vi: set shiftwidth=2 :
+
+---
+  - name: Install ZNC
+    apt: pkg=znc state=installed
+
+  - name: Configure ZNC by untarring files into ~zorn/.znc
+    unarchive: src=roles/znc/files/znc.tgz dest=/home/zorn/ owner=zorn group=zorn keep_newer=yes creates=/home/zorn/.znc/znc.pem
+
+  - name: Add ZNC to the zorn crontab
+    cron: minute="*/10" job="/usr/local/bin/znc >/dev/null 2>&1"

@@ -1,0 +1,16 @@
+# vi: set numberwidth=2 :
+# vi: set tabstop=2 :
+# vi: set shiftwidth=2 :
+
+---
+  - name: Add zorn user
+    user: name=zorn
+
+  - name: Add zorn authorized_keys
+    authorized_key: user=zorn key=https://github.com/zornme.keys
+
+  - name: Add zorn to sudoers
+    lineinfile: "dest=/etc/sudoers state=present line='zorn ALL=(ALL) NOPASSWD: ALL'"
+
+  - name: Install NTP
+    apt: pkg=ntp state=installed

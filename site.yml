@@ -1,0 +1,19 @@
+# vi: set numberwidth=2 :
+# vi: set tabstop=2 :
+# vi: set shiftwidth=2 :
+
+# TODO _enable_ unattended upgrades
+---
+- hosts: all
+  become: yes
+  roles:
+    - common
+    - security
+    - znc
+
+  pre_tasks:
+    - name: apt-get update
+      apt: update_cache=yes cache_valid_time=3600
+
+    - name: apt-get safe-upgrade
+      apt: upgrade=safe

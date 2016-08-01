@@ -1,0 +1,41 @@
+# vi: set numberwidth=2 :
+# vi: set tabstop=2 :
+# vi: set shiftwidth=2 :
+
+---
+  - name: Copy sshd_config
+    copy: src=roles/security/files/sshd_config dest=/etc/ssh/sshd_config
+
+  - name: Install unattended-upgrades
+    apt: name=unattended-upgrades state=present
+
+  - name: Install fail2ban
+    apt: pkg=fail2ban state=installed
+
+  - name: Install UFW
+    apt: pkg=ufw state=installed
+
+  - name: Enable UFW
+    ufw: state=enabled
+
+  - name: UFW deny incoming
+    ufw: policy=deny direction=incoming
+
+  - name: UFW deny outgoing
+    ufw: policy=deny direction=outgoing
+
+  - name: UFW allow ssh
+    ufw: rule=allow name=ssh
+
+  - name: UFW rate limit ssh
+    ufw: rule=limit name=ssh
+
+  - name: Configure other UFW ports
+    ufw: rule=allow port={{ item.port }} proto={{ item.proto }} direction={{ item.direction }}
+    with_items:
+      - { name: dns,   port: 53,    proto: udp, direction: out }
+      - { name: http,  port: 80,    proto: tcp, direction: out }
+      - { name: https, port: 443,   proto: tcp, direction: out }
+      - { name: ntp,   port: 123,   proto: tcp, direction: out }
+      - { name: znc,   port: 44870, proto: tcp, direction: in  }
+     # - { name: irc,   port: 6667,  proto: tcp, direction: out }
