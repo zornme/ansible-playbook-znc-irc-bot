@@ -32,10 +32,4 @@
 
   - name: Configure other UFW ports
     ufw: rule=allow port={{ item.port }} proto={{ item.proto }} direction={{ item.direction }}
-    with_items:
-      - { name: dns,   port: 53,    proto: udp, direction: out }
-      - { name: http,  port: 80,    proto: tcp, direction: out }
-      - { name: https, port: 443,   proto: tcp, direction: out }
-      - { name: ntp,   port: 123,   proto: tcp, direction: out }
-      - { name: znc,   port: 44870, proto: tcp, direction: in  }
-      - { name: irc,   port: 6667,  proto: tcp, direction: out }
+    with_items: "{{ ufw_ports }}"
