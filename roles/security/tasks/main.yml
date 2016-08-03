@@ -38,4 +38,4 @@
       - { name: https, port: 443,   proto: tcp, direction: out }
       - { name: ntp,   port: 123,   proto: tcp, direction: out }
       - { name: znc,   port: 44870, proto: tcp, direction: in  }
-     # - { name: irc,   port: 6667,  proto: tcp, direction: out }
+      - { name: irc,   port: 6667,  proto: tcp, direction: out }
