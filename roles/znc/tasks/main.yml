@@ -10,4 +10,5 @@
     unarchive: src=roles/znc/files/znc.tgz dest=/home/zorn/ owner=zorn group=zorn keep_newer=yes creates=/home/zorn/.znc/znc.pem
 
   - name: Add ZNC to the zorn crontab
-    cron: minute="*/10" job="/usr/local/bin/znc >/dev/null 2>&1"
+    cron: name=znc minute="*/10" job="/usr/local/bin/znc >/dev/null 2>&1"
+    become_user: zorn
