@@ -10,6 +10,7 @@
     - common
     - security
     - znc
+    - gerickbot
 
   pre_tasks:
     - name: apt-get update
