@@ -1,0 +1,43 @@
+# vi: set numberwidth=2 :
+# vi: set tabstop=2 :
+# vi: set shiftwidth=2 :
+
+---
+  - name: Install apt prerequisites
+    apt: name={{ item }} state=present
+    with_items:
+      - screen # Sorry mom
+      - git
+      - ruby
+      - ruby-dev
+      - libsqlite3-dev
+      - build-essential
+
+  # TODO Refactor the bot and use a proper gemfile
+  - name: Install gem dependencies
+    gem: name={{ item }} state=latest
+    become_user: zorn
+    with_items:
+      - cinch
+      - hpricot
+      - sqlite3
+      - cinch-dice
+      - pickup
+      - twitter
+
+  - name: Checkout cinch-twitter-simple
+    git: repo=https://github.com/zornme/cinch-twitter-simple.git dest=/home/zorn/code/cinch-twitter-simple
+    become_user: zorn
+
+  - name: Build cinch-twitter-simple
+    command: gem build cinch-twitter-simple.gemspec
+      creates=/home/zorn/code/cinch-twitter-simple/cinch-twitter-simple-0.1.1.gem
+      chdir=/home/zorn/code/cinch-twitter-simple
+    become_user: zorn
+
+  - name: Install cinch-twitter-simple
+    gem: name=cinch-twitter-simple gem_source=/home/zorn/code/cinch-twitter-simple/cinch-twitter-simple-0.1.1.gem
+    become_user: zorn
+
+  - name: Unarchive gerick.rb directory
+    unarchive: src=roles/gerickbot/files/gerick.rb.tgz dest=/home/zorn/code owner=zorn group=zorn keep_newer=yes creates=/home/zorn/code/gerick.rb/gerick.rb
