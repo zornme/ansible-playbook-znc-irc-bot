@@ -2,7 +2,6 @@
 # vi: set tabstop=2 :
 # vi: set shiftwidth=2 :
 
-# TODO _enable_ unattended upgrades
 ---
 - hosts: all
   become: yes

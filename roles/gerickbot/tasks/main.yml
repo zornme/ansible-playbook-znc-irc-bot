@@ -6,7 +6,7 @@
   - name: Install apt prerequisites
     apt: name={{ item }} state=present
     with_items:
-      - screen # Sorry mom
+      - screen # TODO properly daemonize bot
       - git
       - ruby
       - ruby-dev
